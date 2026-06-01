@@ -1,6 +1,6 @@
 # CYD Dashboard — cyd-3dprinter-HA-integration
 
-> A feature-rich ESPHome dashboard for the **Cheap Yellow Display (CYD)** that monitors your Bambu Lab 3D printer in real time through Home Assistant.
+> A feature-rich ESPHome dashboard for the **Cheap Yellow Display (CYD)** that monitors your 3D printer in real time through Home Assistant.
 
 ![Banner](docs/images/banner.png)
 
@@ -113,38 +113,12 @@ That's it. No local files beyond your config and secrets needed. ESPHome fetches
 
 - [ESPHome](https://esphome.io) ≥ 2025.2.0 (CLI or Home Assistant add-on)
 - [Home Assistant](https://www.home-assistant.io) with the **Bambu Lab integration** installed
-- A **Bambu Lab X1C** (or adapt the entity IDs for other models — see [Configuration](#configuration))
+- A **Bambu Lab X1C** (or adapt the entity IDs for other models — see [Configuration](#configuration)) I have used [this integration](https://github.com/greghesp/ha-bambulab)
 
 ---
 
 ## 🚀 Installation
 
-### 1 — Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/cyd-bambu-dashboard.git
-cd cyd-bambu-dashboard
-```
-
-### 2 — Create your `secrets.yaml`
-
-Copy the example and fill in your own values:
-
-```bash
-cp secrets.yaml.example secrets.yaml
-```
-
-Edit `secrets.yaml`:
-
-```yaml
-wifi_ssid: "YourNetworkName"
-wifi_password: "YourWiFiPassword"
-ha_api_key: "your-esphome-api-encryption-key"   # generate with: esphome generate-secrets
-ota_password: "your-ota-password"
-wifi_ap_password: "fallback-ap-password"
-```
-
-> ⚠️ `secrets.yaml` is excluded from Git by `.gitignore`. Never commit it.
 
 ### 3 — Configure your printer entities
 
@@ -176,43 +150,7 @@ esphome run cyd-x1c.yaml
 esphome run cyd-x1c.yaml
 ```
 
----
 
-## ⚙️ Configuration
-
-### Project structure
-
-```
-esphome/
-├── cyd-x1c.yaml                      # Main config (packages + esphome stack)
-├── packages/
-│   └── cyd-x1c-substitutions.yaml    # All substitutions for the X1C
-├── secrets.yaml                       # Your credentials — NOT committed
-├── secrets.yaml.example               # Template to share safely
-└── .gitignore
-```
-
-### Adapting for another printer model
-
-1. Duplicate `packages/cyd-x1c-substitutions.yaml` → e.g. `packages/cyd-p1s-substitutions.yaml`
-2. Update `device_name`, `friendly_name`, `short_name` and all `printer_*_entity` values
-3. Duplicate `cyd-x1c.yaml` → `cyd-p1s.yaml` and change the include:
-   ```yaml
-   packages:
-     substitutions: !include packages/cyd-p1s-substitutions.yaml
-   ```
-4. Flash with `esphome run cyd-p1s.yaml`
-
-### Touch calibration
-
-If touches are inaccurate, adjust in `packages/cyd-x1c-substitutions.yaml`:
-
-```yaml
-touch_cal_x_min: "280"
-touch_cal_x_max: "3860"
-touch_cal_y_min: "340"
-touch_cal_y_max: "3860"
-```
 
 ---
 
