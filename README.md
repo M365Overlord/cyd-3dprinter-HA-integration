@@ -2,6 +2,8 @@
 
 > A feature-rich ESPHome dashboard for the **Cheap Yellow Display (CYD)** that monitors your 3D printer in real time through Home Assistant.
 
+![banner](imgs/dualscreen.jpeg)
+
 ---
 
 ## ✨ Features
