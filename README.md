@@ -122,6 +122,9 @@ There is 3 controls on the touch screen :
 You will need to allow in HomeAssistant the device to perform action.
 Check the guide [here](https://www.home-assistant.io/integrations/esphome#allow-the-device-to-perform-home-assistant-actions)
 
+Quick menu details :
+![Grid](imgs/quick.jpeg)
+
 ## 🛒 Hardware
 
 | Component | Details |
