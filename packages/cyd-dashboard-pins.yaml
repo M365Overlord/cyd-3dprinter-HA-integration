@@ -1,0 +1,34 @@
+substitutions:
+  # ── CYD hardware pins ─────────────────────────────────────────────────────
+  # Default values match the standard CYD (Cheap Yellow Display) board.
+  # Only change these if your board uses different GPIO assignments.
+  pin_spi_clk: GPIO14
+  pin_spi_mosi: GPIO13
+  pin_spi_miso: GPIO12
+  pin_tft_cs: GPIO15
+  pin_tft_dc: GPIO2
+  pin_tft_bl: GPIO21
+  pin_touch_cs: GPIO33
+  pin_touch_irq: GPIO36
+  pin_touch_clk: GPIO25
+  pin_touch_mosi: GPIO32
+  pin_touch_miso: GPIO39
+  pin_rgb_r: GPIO17
+  pin_rgb_g: GPIO16
+  pin_rgb_b: GPIO27
+  
+  # ── Display config ─────────────────────────────────────────────────────────
+  display_w: "320"
+  display_h: "240"
+  display_swap_xy: "true"
+  display_mirror_x: "false"
+  display_mirror_y: "false"
+  
+  # ── Touch calibration ──────────────────────────────────────────────────────
+  touch_swap_xy: "true"
+  touch_mirror_x: "false"
+  touch_mirror_y: "false"
+  touch_cal_x_min: "280"
+  touch_cal_x_max: "3860"
+  touch_cal_y_min: "340"
+  touch_cal_y_max: "3860"
