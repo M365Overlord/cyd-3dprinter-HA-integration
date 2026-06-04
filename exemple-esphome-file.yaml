@@ -12,13 +12,10 @@ substitutions:
   short_name: X1C                     # Short label shown on the display
 
   # ── API / OTA / Wi-Fi credentials ─────────────────────────────────────────
-  # Leave as !secret and define these in your secrets.yaml or put them here
+  # Leave these as !secret and define them in secrets.yaml.
+  # Generate ha_api_key from ESPHome's API encryption key helper.
   ha_api_key: !secret ha_api_key
-  #or
-  #ha_api_key: "" #<-- you can put them here
   ota_password: !secret ota_password
-  #or
-  #ota_password: ""
   wifi_ssid: !secret wifi_ssid
   wifi_password: !secret wifi_password
 

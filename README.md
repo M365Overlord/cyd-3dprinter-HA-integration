@@ -35,7 +35,7 @@
 |-------------|--------------|
 | ![Grid](imgs/grid.jpeg) | ![Skeuo](imgs/skeuomorphic.jpeg) |
 
-> Note that some of the themes are not finished
+> Note that some of the themes are not finished.
 
 ---
 
@@ -45,7 +45,7 @@ You can use this dashboard **without cloning the repository**. ESPHome will down
 
 ### 1 — Create your device config
 
-Go into you ESPHome Builder, create a blank config, copy the exemple bellow and fill in your printer entities:
+In ESPHome Builder, create a blank config, copy the example below, and fill in your printer entities:
 
 ```yaml
 # ─────────────────────────────────────────────────────────────────────────────
@@ -62,13 +62,10 @@ substitutions:
   short_name: X1C                     # Short label shown on the display
 
   # ── API / OTA / Wi-Fi credentials ─────────────────────────────────────────
-  # Leave as !secret and define these in your secrets.yaml or put them here
+  # Leave these as !secret and define them in secrets.yaml.
+  # Generate ha_api_key from ESPHome's API encryption key helper.
   ha_api_key: !secret ha_api_key
-  #or
-  #ha_api_key: "" #<-- you can put them here
   ota_password: !secret ota_password
-  #or
-  #ota_password: ""
   wifi_ssid: !secret wifi_ssid
   wifi_password: !secret wifi_password
 
@@ -106,26 +103,28 @@ packages:
 ```bash
 esphome run my-x1c.yaml
 ```
-Or directly in HomeAssistant via ESPHome Builder
+You can also flash directly from ESPHome Builder in Home Assistant.
 
-I recommand that you use the USB cable for flashing.
+Using a USB cable is recommended for the first flash.
 
 That's it. No local files beyond your config and secrets needed. ESPHome fetches the dashboard code and all defaults from GitHub, caches it locally, and refreshes once per day.
 
 ---
 
-### 3 - Usage
+### 3 — Usage
 
-There is 3 controls on the touch screen :
+There are 3 controls on the touch screen:
 - **Swipe right-to-left** → next theme  
 - **Swipe left-to-right** → next palette
 - **Swipe down-to-up** → quick menu
 
-You will need to allow in HomeAssistant the device to perform action.
-Check the guide [here](https://www.home-assistant.io/integrations/esphome#allow-the-device-to-perform-home-assistant-actions)
+You need to allow the ESPHome device to perform Home Assistant actions. See the [Home Assistant ESPHome actions guide](https://www.home-assistant.io/integrations/esphome#allow-the-device-to-perform-home-assistant-actions).
 
-Quick menu details :
-![Grid](imgs/quick.jpeg)
+The quick menu can call `homeassistant.toggle` for `quick_action_entity`, so it works best with on/off entities such as `switch.*`.
+
+Quick menu details:
+
+![Quick menu](imgs/quick.jpeg)
 
 ## 🛒 Hardware
 
@@ -144,7 +143,7 @@ Quick menu details :
 
 - [ESPHome](https://esphome.io) ≥ 2025.2.0 (CLI or Home Assistant add-on)
 - [Home Assistant](https://www.home-assistant.io) with the **Bambu Lab integration** installed
-- A **Bambu Lab X1C** (or adapt the entity IDs for other models — see [Configuration](#configuration)) I have used [this integration](https://github.com/greghesp/ha-bambulab)
+- A **Bambu Lab X1C**, or another printer integration exposing similar sensors. This project was tested with [ha-bambulab](https://github.com/greghesp/ha-bambulab).
 
 ---
 
@@ -165,7 +164,19 @@ Themes and palettes are **independent** — you can mix any theme with any palet
 
 Both are exposed as `select` entities in Home Assistant (`CYD X1C Dashboard Theme` / `Palette`) and persist across reboots.
 
-You can create you own colors with the ESPHome substitutions (don't forget to comment-out the package)
+You can create your own colors with ESPHome substitutions. If you override the palette values locally, remove or comment out the remote `colors` package.
+
+---
+
+## ✅ Validate Before Flashing
+
+Before flashing, you can check that ESPHome can load the remote packages and substitutions:
+
+```bash
+esphome config my-x1c.yaml
+```
+
+Make sure your `secrets.yaml` contains `ha_api_key`, `ota_password`, `wifi_ssid`, and `wifi_password`.
 
 ---
 
@@ -194,6 +205,6 @@ I have used [this model](https://makerworld.com/en/models/2787810-cyd-desk-buddy
 |---------|-----|
 | Touch is off / inverted | Adjust `touch_cal_*` and `touch_swap_xy` / `touch_mirror_*` substitutions |
 | Display is mirrored | Set `display_mirror_x` or `display_mirror_y` to `"true"` |
-| No printer data | Check entity IDs in `cyd-x1c-substitutions.yaml` match your HA integration |
+| No printer data | Check the `printer_*_entity` substitutions in your ESPHome config match your HA integration |
 | Theme not restored after reboot | ESPHome saves theme index to NVS — first reboot after flash resets to default |
-| WiFi fallback AP active | Connect to `CYD-X1C-Fallback` with `wifi_ap_password` from `secrets.yaml` |
+| WiFi fallback AP active | Connect to the `CYD-<short_name>-Fallback` access point and update your Wi-Fi credentials |
