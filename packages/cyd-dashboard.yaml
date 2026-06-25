@@ -103,22 +103,10 @@ esphome:
           text: "..."
           text_color: 0xFFB74D
       - lambda: |-
-          static const char* themes[] = {
-            "Tactical", "Monitor", "Orbit", "Blueprint",
-            "Brutal", "Apple", "Modern Grid", "Skeuomorphic"
-          };
-          static const char* palettes[] = {
-            "Tactical", "Monitor", "Orbit", "Blueprint",
-            "Brutal", "Apple", "Modern Grid", "Skeuomorphic"
-          };
-          int tidx = id(saved_theme_idx);
-          if (tidx >= 0 && tidx < 8) {
-            id(cfg_theme).publish_state(std::string(themes[tidx]));
-          }
-          int pidx = id(saved_palette_idx);
-          if (pidx >= 0 && pidx < 8) {
-            id(cfg_palette).publish_state(std::string(palettes[pidx]));
-          }
+          static const char* themes[] = { "Orbit" };
+          static const char* palettes[] = { "Modern Grid" };
+          id(cfg_theme).publish_state(std::string(themes[0]));
+          id(cfg_palette).publish_state(std::string(palettes[0]));
       - script.execute: apply_theme
       - delay: 100ms
       - script.execute: apply_palette
@@ -695,15 +683,8 @@ select:
     optimistic: true
     restore_value: true
     options:
-      - "Tactical"
-      - "Monitor"
       - "Orbit"
-      - "Blueprint"
-      - "Brutal"
-      - "Apple"
-      - "Modern Grid"
-      - "Skeuomorphic"
-    initial_option: "Tactical"
+    initial_option: "Orbit"
     set_action:
       - lambda: |-
           id(cfg_theme).publish_state(x);
@@ -719,15 +700,8 @@ select:
     optimistic: true
     restore_value: true
     options:
-      - "Tactical"
-      - "Monitor"
-      - "Orbit"
-      - "Blueprint"
-      - "Brutal"
-      - "Apple"
       - "Modern Grid"
-      - "Skeuomorphic"
-    initial_option: "Tactical"
+    initial_option: "Modern Grid"
     set_action:
       - lambda: |-
           id(cfg_palette).publish_state(x);
@@ -3505,11 +3479,8 @@ script:
     mode: single
     then:
       - lambda: |-
-          static const char* themes[] = {
-            "Tactical", "Monitor", "Orbit", "Blueprint",
-            "Brutal", "Apple", "Modern Grid", "Skeuomorphic"
-          };
-          const int count = 8;
+          static const char* themes[] = { "Orbit" };
+          const int count = 1;
           const std::string cur = id(cfg_theme).current_option();
           int idx = 0;
           for (int i = 0; i < count; i++) {
@@ -3530,11 +3501,8 @@ script:
     mode: single
     then:
       - lambda: |-
-          static const char* palettes[] = {
-            "Tactical", "Monitor", "Orbit", "Blueprint",
-            "Brutal", "Apple", "Modern Grid", "Skeuomorphic"
-          };
-          const int count = 8;
+          static const char* palettes[] = { "Modern Grid" };
+          const int count = 1;
           const std::string cur = id(cfg_palette).current_option();
           int idx = 0;
           for (int i = 0; i < count; i++) {
@@ -4275,6 +4243,7 @@ lvgl:
                         text: "--:--:--"
                         text_font: font_clock
                         text_color: 0xFFFFFF
+                        hidden: true
               - obj:
                   x: 8
                   y: 46
