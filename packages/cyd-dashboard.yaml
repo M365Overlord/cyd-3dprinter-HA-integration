@@ -4559,7 +4559,7 @@ lvgl:
                         pad_all: 0
                         bg_color: 0x162A4C
                     - label:
-                        id: ev9_battery_pct
+                        id: lbl_ev9_battery_pct
                         x: 18
                         y: 43
                         width: 96
@@ -4672,7 +4672,7 @@ lvgl:
                               text_font: font_orbit_caption
                               text_color: 0x6F8FC5
                           - label:
-                              id: ev9_charge_limit
+                              id: lbl_ev9_charge_limit
                               x: 0
                               y: 98
                               text: "--%"
