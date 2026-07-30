@@ -4483,214 +4483,188 @@ lvgl:
             radius: 0
             border_width: 0
             pad_all: 0
-            bg_color: 0x0D1730
+            bg_color: 0x162543
             scrollable: false
             scrollbar_mode: "OFF"
             widgets:
-              - obj:
-                  x: 8
+              - label:
+                  x: 0
                   y: 8
-                  width: 304
-                  height: 34
-                  radius: 12
-                  border_width: 1
-                  border_color: 0x23395F
+                  width: 320
+                  text_align: CENTER
+                  text: "Aspen EV9 Dashboard"
+                  text_font: montserrat_14
+                  text_color: 0x9AB1D8
+              - label:
+                  id: ev9_refresh_btn
+                  x: 6
+                  y: 4
+                  width: 40
+                  height: 20
+                  text_align: LEFT
+                  text: "SYNC"
+                  text_font: montserrat_14
+                  text_color: 0x4CC9F0
+                  clickable: true
+                  on_click:
+                    - homeassistant.action:
+                        action: script.turn_on
+                        data:
+                          entity_id: script.ev9_manual_refresh
+                    - lvgl.label.update:
+                        id: ev9_refresh_btn
+                        text_color: 0xFF7C43
+                    - delay: 400ms
+                    - lvgl.label.update:
+                        id: ev9_refresh_btn
+                        text_color: 0x4CC9F0
+              - arc:
+                  id: ev9_battery_arc
+                  x: 14
+                  y: 40
+                  width: 170
+                  height: 170
+                  min_value: 0
+                  max_value: 100
+                  value: 0
+                  adjustable: false
+                  clickable: false
+                  start_angle: 270
+                  end_angle: 269
+                  arc_width: 14
+                  arc_color: 0x9AB1D8
+                  arc_rounded: true
+                  bg_opa: TRANSP
+                  border_width: 0
                   pad_all: 0
-                  bg_color: 0x152447
-                  scrollable: false
-                  scrollbar_mode: "OFF"
+                  indicator:
+                    arc_color: 0x4CC9F0
+                    arc_width: 14
+                    arc_rounded: true
                   widgets:
-                    - label:
-                        x: 12
-                        y: 1
-                        text: "Aspen EV9"
-                        text_font: font_orbit_title
-                        text_color: 0xF4F7FF
-                    - label:
-                        x: 12
-                        y: 16
-                        text: "EV9 CHARGE STATUS"
-                        text_font: font_orbit_caption
-                        text_color: 0x6F8FC5
-              - obj:
-                  x: 8
-                  y: 46
-                  width: 132
-                  height: 150
-                  radius: 14
-                  border_width: 1
-                  border_color: 0x1F3357
-                  pad_all: 0
-                  bg_color: 0x132241
-                  scrollable: false
-                  scrollbar_mode: "OFF"
-                  widgets:
-                    - arc:
-                        id: ev9_battery_arc
-                        x: 18
-                        y: 12
-                        width: 96
-                        height: 96
-                        min_value: 0
-                        max_value: 100
-                        value: 0
-                        adjustable: false
-                        clickable: false
-                        start_angle: 135
-                        end_angle: 45
-                        arc_width: 10
-                        arc_color: 0x203865
-                        arc_rounded: true
-                        bg_opa: TRANSP
-                        border_width: 0
-                        pad_all: 0
-                        indicator:
-                          arc_color: 0xFF8A3D
-                          arc_width: 10
-                          arc_rounded: true
-                    - obj:
-                        x: 31
-                        y: 25
-                        width: 70
-                        height: 70
-                        radius: 35
-                        border_width: 1
-                        border_color: 0x1C3156
-                        pad_all: 0
-                        bg_color: 0x162A4C
                     - label:
                         id: lbl_ev9_battery_pct
-                        x: 18
-                        y: 43
-                        width: 96
-                        text_align: CENTER
+                        align: CENTER
+                        y: -6
                         text: "--%"
-                        text_font: font_clock
-                        text_color: 0xFFFFFF
+                        text_font: montserrat_40
+                        text_color: 0xEDF5FF
                     - label:
                         id: ev9_status
-                        x: 8
-                        y: 116
-                        width: 116
-                        text_align: CENTER
+                        align: CENTER
+                        y: 30
                         text: ""
-                        text_font: font_orbit_caption
-                        text_color: 0xFF8A3D
+                        text_font: montserrat_14
+                        text_color: 0x4CC9F0
                         hidden: true
               - obj:
-                  x: 148
-                  y: 46
-                  width: 164
-                  height: 150
-                  radius: 14
-                  border_width: 1
-                  border_color: 0x1F3357
+                  x: 200
+                  y: 36
+                  width: 1
+                  height: 194
+                  bg_color: 0x2A3A5C
+                  border_width: 0
+              - obj:
+                  id: ev9_idle_stats
+                  x: 214
+                  y: 40
+                  width: 98
+                  height: 190
+                  bg_opa: TRANSP
+                  border_width: 0
                   pad_all: 0
-                  bg_color: 0x132241
                   scrollable: false
-                  scrollbar_mode: "OFF"
                   widgets:
-                    - obj:
-                        id: ev9_idle_stats
-                        x: 8
-                        y: 8
-                        width: 148
-                        height: 134
-                        bg_opa: TRANSP
-                        border_width: 0
-                        pad_all: 0
-                        scrollable: false
-                        widgets:
-                          - label:
-                              x: 0
-                              y: 18
-                              text: "RANGE"
-                              text_font: font_orbit_caption
-                              text_color: 0x6F8FC5
-                          - label:
-                              id: ev9_range_idle
-                              x: 0
-                              y: 34
-                              text: "-- mi"
-                              text_font: font_orbit_title
-                              text_color: 0xFFFFFF
-                          - label:
-                              x: 0
-                              y: 82
-                              text: "LAST SYNCED"
-                              text_font: font_orbit_caption
-                              text_color: 0x6F8FC5
-                          - label:
-                              id: ev9_sync_idle
-                              x: 0
-                              y: 98
-                              text: "--"
-                              text_font: font_orbit_title
-                              text_color: 0xFFFFFF
-                    - obj:
-                        id: ev9_charging_stats
-                        x: 8
-                        y: 8
-                        width: 148
-                        height: 134
-                        bg_opa: TRANSP
-                        border_width: 0
-                        pad_all: 0
-                        scrollable: false
-                        hidden: true
-                        widgets:
-                          - label:
-                              x: 0
-                              y: 0
-                              text: "RANGE"
-                              text_font: font_orbit_caption
-                              text_color: 0x6F8FC5
-                          - label:
-                              id: ev9_range_chg
-                              x: 0
-                              y: 14
-                              text: "-- mi"
-                              text_font: font_orbit_title
-                              text_color: 0xFFFFFF
-                          - label:
-                              x: 0
-                              y: 42
-                              text: "TIME TO LIMIT"
-                              text_font: font_orbit_caption
-                              text_color: 0x6F8FC5
-                          - label:
-                              id: ev9_time_limit
-                              x: 0
-                              y: 56
-                              text: "-- min"
-                              text_font: font_orbit_title
-                              text_color: 0xFFFFFF
-                          - label:
-                              x: 0
-                              y: 84
-                              text: "CHARGE LIMIT"
-                              text_font: font_orbit_caption
-                              text_color: 0x6F8FC5
-                          - label:
-                              id: lbl_ev9_charge_limit
-                              x: 0
-                              y: 98
-                              text: "--%"
-                              text_font: font_orbit_title
-                              text_color: 0xFFFFFF
-                          - label:
-                              x: 0
-                              y: 118
-                              text: "SYNCED"
-                              text_font: font_orbit_caption
-                              text_color: 0x6F8FC5
-                          - label:
-                              id: ev9_sync_chg
-                              x: 0
-                              y: 132
-                              text: "--"
-                              text_font: font_orbit_caption
-                              text_color: 0xFFFFFF
+                    - label:
+                        x: 0
+                        y: 36
+                        text: "RANGE"
+                        text_font: montserrat_12
+                        text_color: 0x9AB1D8
+                    - label:
+                        id: ev9_range_idle
+                        x: 0
+                        y: 54
+                        text: "-- mi"
+                        text_font: montserrat_22
+                        text_color: 0xEDF5FF
+                    - label:
+                        x: 0
+                        y: 120
+                        text: "LAST SYNCED"
+                        text_font: montserrat_12
+                        text_color: 0x9AB1D8
+                    - label:
+                        id: ev9_sync_idle
+                        x: 0
+                        y: 138
+                        text: "--"
+                        text_font: montserrat_16
+                        text_color: 0xEDF5FF
+              - obj:
+                  id: ev9_charging_stats
+                  x: 214
+                  y: 40
+                  width: 98
+                  height: 190
+                  bg_opa: TRANSP
+                  border_width: 0
+                  pad_all: 0
+                  scrollable: false
+                  hidden: true
+                  widgets:
+                    - label:
+                        x: 0
+                        y: 0
+                        text: "RANGE"
+                        text_font: montserrat_10
+                        text_color: 0x9AB1D8
+                    - label:
+                        id: ev9_range_chg
+                        x: 0
+                        y: 14
+                        text: "-- mi"
+                        text_font: montserrat_16
+                        text_color: 0xEDF5FF
+                    - label:
+                        x: 0
+                        y: 48
+                        text: "TIME TO LIMIT"
+                        text_font: montserrat_10
+                        text_color: 0x9AB1D8
+                    - label:
+                        id: ev9_time_limit
+                        x: 0
+                        y: 62
+                        text: "-- min"
+                        text_font: montserrat_16
+                        text_color: 0xEDF5FF
+                    - label:
+                        x: 0
+                        y: 96
+                        text: "CHARGE LIMIT"
+                        text_font: montserrat_10
+                        text_color: 0x9AB1D8
+                    - label:
+                        id: lbl_ev9_charge_limit
+                        x: 0
+                        y: 110
+                        text: "--%"
+                        text_font: montserrat_16
+                        text_color: 0xEDF5FF
+                    - label:
+                        x: 0
+                        y: 144
+                        text: "SYNCED"
+                        text_font: montserrat_10
+                        text_color: 0x9AB1D8
+                    - label:
+                        id: ev9_sync_chg
+                        x: 0
+                        y: 158
+                        text: "--"
+                        text_font: montserrat_14
+                        text_color: 0xEDF5FF
 
     - id: page_blueprint
       widgets:
