@@ -183,6 +183,11 @@ globals:
     restore_value: no
     initial_value: 'false'
 
+  - id: on_secondary_page
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+
   - id: palette_bg_color
     type: uint32_t
     restore_value: no
@@ -398,13 +403,8 @@ touchscreen:
               }
               if (!id(swipe_gesture_consumed) && delta_x >= 60 && abs_delta_y <= 60) {
                 id(swipe_gesture_consumed) = true;
-                if (raw_delta_x < 0) {
-                  ESP_LOGI("touch", "swipe right-to-left: next theme dx=%d", raw_delta_x);
-                  id(next_theme).execute();
-                } else {
-                  ESP_LOGI("touch", "swipe left-to-right: next palette dx=%d", raw_delta_x);
-                  id(next_palette).execute();
-                }
+                ESP_LOGI("touch", "horizontal swipe: toggle secondary page dx=%d", raw_delta_x);
+                id(toggle_secondary_page).execute();
                 break;
               }
             } else {
@@ -3475,48 +3475,18 @@ script:
       - delay: 2000ms
       - lvgl.widget.hide: toast_box
 
-  - id: next_theme
+  - id: toggle_secondary_page
     mode: single
     then:
       - lambda: |-
-          static const char* themes[] = { "Orbit" };
-          const int count = 1;
-          const std::string cur = id(cfg_theme).current_option();
-          int idx = 0;
-          for (int i = 0; i < count; i++) {
-            if (cur == themes[i]) { idx = i; break; }
-          }
-          idx = (idx + 1) % count;
-          id(saved_theme_idx) = idx;
-          id(toast_message) = std::string("Theme: ") + themes[idx];
-          auto call = id(cfg_theme).make_call();
-          call.set_option(std::string(themes[idx]));
-          call.perform();
-      - script.execute: apply_theme
-      - script.execute: apply_palette
-      - script.execute: refresh_ui
-      - script.execute: show_toast
-
-  - id: next_palette
-    mode: single
-    then:
-      - lambda: |-
-          static const char* palettes[] = { "Modern Grid" };
-          const int count = 1;
-          const std::string cur = id(cfg_palette).current_option();
-          int idx = 0;
-          for (int i = 0; i < count; i++) {
-            if (cur == palettes[i]) { idx = i; break; }
-          }
-          idx = (idx + 1) % count;
-          id(saved_palette_idx) = idx;
-          id(toast_message) = std::string("Palette: ") + palettes[idx];
-          auto call = id(cfg_palette).make_call();
-          call.set_option(std::string(palettes[idx]));
-          call.perform();
-      - script.execute: apply_palette
-      - script.execute: refresh_ui
-      - script.execute: show_toast
+          id(on_secondary_page) = !id(on_secondary_page);
+      - if:
+          condition:
+            lambda: 'return id(on_secondary_page);'
+          then:
+            - lvgl.page.show: ${secondary_page_id}
+          else:
+            - lvgl.page.show: page_orbit
 
 interval:
   - interval: 1s
@@ -4501,6 +4471,226 @@ lvgl:
                         text: "E --"
                         text_font: font_orbit_caption
                         text_color: 0xA8B9D8
+
+    - id: page_ev9
+      widgets:
+        - obj:
+            id: ev9_root
+            x: 0
+            y: 0
+            width: 320
+            height: 240
+            radius: 0
+            border_width: 0
+            pad_all: 0
+            bg_color: 0x0D1730
+            scrollable: false
+            scrollbar_mode: "OFF"
+            widgets:
+              - obj:
+                  x: 8
+                  y: 8
+                  width: 304
+                  height: 34
+                  radius: 12
+                  border_width: 1
+                  border_color: 0x23395F
+                  pad_all: 0
+                  bg_color: 0x152447
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - label:
+                        x: 12
+                        y: 1
+                        text: "Aspen EV9"
+                        text_font: font_orbit_title
+                        text_color: 0xF4F7FF
+                    - label:
+                        x: 12
+                        y: 16
+                        text: "EV9 CHARGE STATUS"
+                        text_font: font_orbit_caption
+                        text_color: 0x6F8FC5
+              - obj:
+                  x: 8
+                  y: 46
+                  width: 132
+                  height: 150
+                  radius: 14
+                  border_width: 1
+                  border_color: 0x1F3357
+                  pad_all: 0
+                  bg_color: 0x132241
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - arc:
+                        id: ev9_battery_arc
+                        x: 18
+                        y: 12
+                        width: 96
+                        height: 96
+                        min_value: 0
+                        max_value: 100
+                        value: 0
+                        adjustable: false
+                        clickable: false
+                        start_angle: 135
+                        end_angle: 45
+                        arc_width: 10
+                        arc_color: 0x203865
+                        arc_rounded: true
+                        bg_opa: TRANSP
+                        border_width: 0
+                        pad_all: 0
+                        indicator:
+                          arc_color: 0xFF8A3D
+                          arc_width: 10
+                          arc_rounded: true
+                    - obj:
+                        x: 31
+                        y: 25
+                        width: 70
+                        height: 70
+                        radius: 35
+                        border_width: 1
+                        border_color: 0x1C3156
+                        pad_all: 0
+                        bg_color: 0x162A4C
+                    - label:
+                        id: ev9_battery_pct
+                        x: 18
+                        y: 43
+                        width: 96
+                        text_align: CENTER
+                        text: "--%"
+                        text_font: font_clock
+                        text_color: 0xFFFFFF
+                    - label:
+                        id: ev9_status
+                        x: 8
+                        y: 116
+                        width: 116
+                        text_align: CENTER
+                        text: ""
+                        text_font: font_orbit_caption
+                        text_color: 0xFF8A3D
+                        hidden: true
+              - obj:
+                  x: 148
+                  y: 46
+                  width: 164
+                  height: 150
+                  radius: 14
+                  border_width: 1
+                  border_color: 0x1F3357
+                  pad_all: 0
+                  bg_color: 0x132241
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - obj:
+                        id: ev9_idle_stats
+                        x: 8
+                        y: 8
+                        width: 148
+                        height: 134
+                        bg_opa: TRANSP
+                        border_width: 0
+                        pad_all: 0
+                        scrollable: false
+                        widgets:
+                          - label:
+                              x: 0
+                              y: 18
+                              text: "RANGE"
+                              text_font: font_orbit_caption
+                              text_color: 0x6F8FC5
+                          - label:
+                              id: ev9_range_idle
+                              x: 0
+                              y: 34
+                              text: "-- mi"
+                              text_font: font_orbit_title
+                              text_color: 0xFFFFFF
+                          - label:
+                              x: 0
+                              y: 82
+                              text: "LAST SYNCED"
+                              text_font: font_orbit_caption
+                              text_color: 0x6F8FC5
+                          - label:
+                              id: ev9_sync_idle
+                              x: 0
+                              y: 98
+                              text: "--"
+                              text_font: font_orbit_title
+                              text_color: 0xFFFFFF
+                    - obj:
+                        id: ev9_charging_stats
+                        x: 8
+                        y: 8
+                        width: 148
+                        height: 134
+                        bg_opa: TRANSP
+                        border_width: 0
+                        pad_all: 0
+                        scrollable: false
+                        hidden: true
+                        widgets:
+                          - label:
+                              x: 0
+                              y: 0
+                              text: "RANGE"
+                              text_font: font_orbit_caption
+                              text_color: 0x6F8FC5
+                          - label:
+                              id: ev9_range_chg
+                              x: 0
+                              y: 14
+                              text: "-- mi"
+                              text_font: font_orbit_title
+                              text_color: 0xFFFFFF
+                          - label:
+                              x: 0
+                              y: 42
+                              text: "TIME TO LIMIT"
+                              text_font: font_orbit_caption
+                              text_color: 0x6F8FC5
+                          - label:
+                              id: ev9_time_limit
+                              x: 0
+                              y: 56
+                              text: "-- min"
+                              text_font: font_orbit_title
+                              text_color: 0xFFFFFF
+                          - label:
+                              x: 0
+                              y: 84
+                              text: "CHARGE LIMIT"
+                              text_font: font_orbit_caption
+                              text_color: 0x6F8FC5
+                          - label:
+                              id: ev9_charge_limit
+                              x: 0
+                              y: 98
+                              text: "--%"
+                              text_font: font_orbit_title
+                              text_color: 0xFFFFFF
+                          - label:
+                              x: 0
+                              y: 118
+                              text: "SYNCED"
+                              text_font: font_orbit_caption
+                              text_color: 0x6F8FC5
+                          - label:
+                              id: ev9_sync_chg
+                              x: 0
+                              y: 132
+                              text: "--"
+                              text_font: font_orbit_caption
+                              text_color: 0xFFFFFF
 
     - id: page_blueprint
       widgets:
