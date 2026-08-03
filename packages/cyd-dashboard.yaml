@@ -4537,10 +4537,6 @@ lvgl:
                   bg_opa: TRANSP
                   border_width: 0
                   pad_all: 0
-                  indicator:
-                    arc_color: 0x4CC9F0
-                    arc_width: 14
-                    arc_rounded: true
                   widgets:
                     - label:
                         id: lbl_ev9_battery_pct
