@@ -4965,6 +4965,29 @@ lvgl:
                         text: "--"
                         text_font: font_orbit_caption
                         text_color: 0xF4F7FF
+                    - label:
+                        x: 155
+                        y: 56
+                        text: "DOWNLOAD - 12HR"
+                        text_font: font_orbit_caption
+                        text_color: 0x6F8FC5
+                    - chart:
+                        id: speed_chart
+                        x: 155
+                        y: 68
+                        width: 135
+                        height: 46
+                        type: LINE
+                        point_count: 24
+                        ymin: 0
+                        ymax: 800
+                        bg_opa: TRANSP
+                        border_width: 0
+                        pad_all: 0
+                        series:
+                          - id: download_series
+                            axis: PRIMARY_Y
+                            color: 0x4CC9F0
 
     - id: page_blueprint
       widgets:
