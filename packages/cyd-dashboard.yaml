@@ -4518,7 +4518,7 @@ lvgl:
                     - homeassistant.action:
                         action: script.turn_on
                         data:
-                          entity_id: script.ev9_manual_refresh
+                          entity_id: script.ev9_force_refresh
                     - lvgl.label.update:
                         id: ev9_refresh_btn
                         text_color: 0xFF7C43
