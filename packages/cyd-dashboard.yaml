@@ -47,7 +47,14 @@ esphome:
                 id: loading_step2_status
                 text: !lambda |-
                   auto ips = id(wifi_main).get_ip_addresses();
-                  return ips.empty() ? std::string("N/A") : ips[0].str();
+                  for (const auto &ip : ips) {
+                    if (ip.is_set()) {
+                      char ip_buf[esphome::network::IP_ADDRESS_BUFFER_SIZE];
+                      ip.str_to(ip_buf);
+                      return std::string(ip_buf);
+                    }
+                  }
+                  return std::string("N/A");
                 text_color: 0x35D08A
           else:
             - lvgl.label.update:
