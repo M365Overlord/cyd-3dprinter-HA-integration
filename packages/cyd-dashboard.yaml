@@ -4821,6 +4821,180 @@ lvgl:
                         text_font: font_orbit_caption
                         text_color: 0x6F8FC5
 
+
+    # ── Attic environment monitor page ────────────────────────────────────────
+    # Static LVGL widgets live in the shared package so P1S can select this as
+    # its tertiary swipe page. Sensor state is supplied by the P1S device YAML.
+    - id: page_attic
+      widgets:
+        - obj:
+            id: attic_root
+            x: 0
+            y: 0
+            width: 320
+            height: 240
+            radius: 0
+            border_width: 0
+            pad_all: 0
+            bg_color: 0x0D1730
+            scrollable: false
+            scrollbar_mode: "OFF"
+            widgets:
+              - obj:
+                  x: 8
+                  y: 8
+                  width: 304
+                  height: 34
+                  radius: 12
+                  border_width: 1
+                  border_color: 0x23395F
+                  pad_all: 0
+                  bg_color: 0x152447
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - label:
+                        x: 12
+                        y: 1
+                        text: "Attic Conditions"
+                        text_font: font_orbit_title
+                        text_color: 0xF4F7FF
+                    - label:
+                        x: 12
+                        y: 16
+                        text: "SHT40 ENVIRONMENT MONITOR"
+                        text_font: font_orbit_caption
+                        text_color: 0x6F8FC5
+
+              # Temperature
+              - obj:
+                  x: 8
+                  y: 50
+                  width: 148
+                  height: 78
+                  radius: 14
+                  border_width: 1
+                  border_color: 0x1F3357
+                  pad_all: 0
+                  bg_color: 0x132241
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - label:
+                        x: 12
+                        y: 10
+                        text: "TEMPERATURE"
+                        text_font: font_orbit_caption
+                        text_color: 0x6F8FC5
+                    - label:
+                        id: lbl_attic_temperature
+                        x: 12
+                        y: 34
+                        width: 124
+                        text_align: CENTER
+                        text: "--.- °F"
+                        text_font: montserrat_22
+                        text_color: 0xFF8A3D
+
+              # Humidity
+              - obj:
+                  x: 164
+                  y: 50
+                  width: 148
+                  height: 78
+                  radius: 14
+                  border_width: 1
+                  border_color: 0x1F3357
+                  pad_all: 0
+                  bg_color: 0x132241
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - label:
+                        x: 12
+                        y: 10
+                        text: "HUMIDITY"
+                        text_font: font_orbit_caption
+                        text_color: 0x6F8FC5
+                    - label:
+                        id: lbl_attic_humidity
+                        x: 12
+                        y: 34
+                        width: 124
+                        text_align: CENTER
+                        text: "--.- %"
+                        text_font: montserrat_22
+                        text_color: 0x4CC9F0
+
+              # Dew point
+              - obj:
+                  x: 8
+                  y: 136
+                  width: 148
+                  height: 78
+                  radius: 14
+                  border_width: 1
+                  border_color: 0x1F3357
+                  pad_all: 0
+                  bg_color: 0x132241
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - label:
+                        x: 12
+                        y: 10
+                        text: "DEW POINT"
+                        text_font: font_orbit_caption
+                        text_color: 0x6F8FC5
+                    - label:
+                        id: lbl_attic_dew_point
+                        x: 12
+                        y: 34
+                        width: 124
+                        text_align: CENTER
+                        text: "--.- °F"
+                        text_font: montserrat_22
+                        text_color: 0x7DFFD8
+
+              # Wi-Fi signal from the attic ESP32
+              - obj:
+                  x: 164
+                  y: 136
+                  width: 148
+                  height: 78
+                  radius: 14
+                  border_width: 1
+                  border_color: 0x1F3357
+                  pad_all: 0
+                  bg_color: 0x132241
+                  scrollable: false
+                  scrollbar_mode: "OFF"
+                  widgets:
+                    - label:
+                        x: 12
+                        y: 10
+                        text: "WI-FI SIGNAL"
+                        text_font: font_orbit_caption
+                        text_color: 0x6F8FC5
+                    - label:
+                        id: lbl_attic_wifi_signal
+                        x: 12
+                        y: 34
+                        width: 124
+                        text_align: CENTER
+                        text: "-- dBm"
+                        text_font: montserrat_22
+                        text_color: 0x9AB1D8
+
+              - label:
+                  x: 0
+                  y: 221
+                  width: 320
+                  text_align: CENTER
+                  text: "SWIPE TO CYCLE"
+                  text_font: font_orbit_caption
+                  text_color: 0x304A73
+
     - id: page_internet
       widgets:
         - obj:
