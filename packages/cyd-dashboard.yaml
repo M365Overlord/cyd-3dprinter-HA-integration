@@ -3829,6 +3829,55 @@ lvgl:
                 text: ""
                 text_font: font_orbit_title
                 text_color: 0xD8EAFF
+  # ── Printer power-off confirmation dialogs ───────────────────────────────
+  # Power ON is immediate. Power OFF is intentionally modal so an accidental
+  # horizontal swipe across a switch cannot shut down a printer.
+  #
+  # These dialogs live in the shared package because page_power and the actual
+  # Meross switch actions also live here.
+  msgboxes:
+    - id: confirm_x2d_power_off
+      close_button: false
+      title: "Confirm X2D Power Off"
+      body:
+        text: "Turn OFF the X2D smart plug?\nOnly continue if the printer is idle."
+      buttons:
+        - id: cancel_x2d_power_off
+          text: "CANCEL"
+          on_click:
+            then:
+              - lvgl.widget.hide: confirm_x2d_power_off
+        - id: apply_x2d_power_off
+          text: "TURN OFF"
+          on_click:
+            then:
+              - homeassistant.action:
+                  action: switch.turn_off
+                  data:
+                    entity_id: switch.office_x2d_power_switch_outlet
+              - lvgl.widget.hide: confirm_x2d_power_off
+
+    - id: confirm_p1s_power_off
+      close_button: false
+      title: "Confirm P1S Power Off"
+      body:
+        text: "Turn OFF the P1S smart plug?\nOnly continue if the printer is idle."
+      buttons:
+        - id: cancel_p1s_power_off
+          text: "CANCEL"
+          on_click:
+            then:
+              - lvgl.widget.hide: confirm_p1s_power_off
+        - id: apply_p1s_power_off
+          text: "TURN OFF"
+          on_click:
+            then:
+              - homeassistant.action:
+                  action: switch.turn_off
+                  data:
+                    entity_id: switch.smart_switch_2212149918298651080948e1e9b38431_outlet
+              - lvgl.widget.hide: confirm_p1s_power_off
+
   pages:
     - id: page_tactical
       widgets:
@@ -4748,21 +4797,27 @@ lvgl:
                         y: 18
                         width: 60
                         height: 30
-                        on_value:
+                        # Only react to USER interaction. Programmatic state
+                        # syncs from Home Assistant must not trigger actions.
+                        on_change:
                           then:
                             - if:
                                 condition:
                                   lambda: 'return x;'
                                 then:
+                                  # Power ON remains immediate.
                                   - homeassistant.action:
                                       action: switch.turn_on
                                       data:
                                         entity_id: switch.office_x2d_power_switch_outlet
                                 else:
-                                  - homeassistant.action:
-                                      action: switch.turn_off
-                                      data:
-                                        entity_id: switch.office_x2d_power_switch_outlet
+                                  # Do not cut power immediately. Restore the
+                                  # visual switch to ON and require confirmation.
+                                  - lvgl.widget.update:
+                                      id: sw_x2d_power
+                                      state:
+                                        checked: true
+                                  - lvgl.widget.show: confirm_x2d_power_off
                     - label:
                         id: lbl_x2d_power_state
                         x: 210
@@ -4803,21 +4858,27 @@ lvgl:
                         y: 18
                         width: 60
                         height: 30
-                        on_value:
+                        # Only react to USER interaction. Programmatic state
+                        # syncs from Home Assistant must not trigger actions.
+                        on_change:
                           then:
                             - if:
                                 condition:
                                   lambda: 'return x;'
                                 then:
+                                  # Power ON remains immediate.
                                   - homeassistant.action:
                                       action: switch.turn_on
                                       data:
                                         entity_id: switch.smart_switch_2212149918298651080948e1e9b38431_outlet
                                 else:
-                                  - homeassistant.action:
-                                      action: switch.turn_off
-                                      data:
-                                        entity_id: switch.smart_switch_2212149918298651080948e1e9b38431_outlet
+                                  # Do not cut power immediately. Restore the
+                                  # visual switch to ON and require confirmation.
+                                  - lvgl.widget.update:
+                                      id: sw_p1s_power
+                                      state:
+                                        checked: true
+                                  - lvgl.widget.show: confirm_p1s_power_off
                     - label:
                         id: lbl_p1s_power_state
                         x: 210
